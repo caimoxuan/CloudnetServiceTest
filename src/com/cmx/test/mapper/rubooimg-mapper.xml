@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmx.test.dao.RubooimgDao">
+	<sql id = "selectId">
+		imgid,
+		imgpath,
+		description,
+		forwordpath
+	</sql>
+
+	<select id = "query" resultType = "Rubooimg" parameterType = "java.util.HashMap">
+		select <include refid = "selectId" />
+		from rubooimg 
+		<where>
+			<if test = "imgid != null">
+				AND imgid = #{imgid}
+			</if>
+			<if test = "imgpath != null">
+				AND imgpath = #{imgpath}
+			</if>
+			<if test = "description != null">
+				AND description = #{description}
+			</if>
+			<if test = "forwordpath != null">
+				AND forwordpath = #{forwordpath}
+			</if>
+		</where>
+	</select>
+
+	<insert id = "add" keyProperty = "id" parameterType = "Rubooimg" useGeneratedKeys = "true">
+		insert into rubooimg(
+			imgid,
+			imgpath,
+			description,
+			forwordpath)
+		values(
+			#{imgid},
+			#{imgpath},
+			#{description},
+			#{forwordpath})
+	</insert>
+
+	<delete id = "delete" parameterType = "String">
+		delete from rubooimg where id = #{id}
+	</delete>
+
+	<update id = "modify" parameterType = "Rubooimg">
+		update rubooimg
+		<set>
+			<if test = "imgid != null">
+				imgid = #{imgid},
+			</if>
+			<if test = "imgpath != null">
+				imgpath = #{imgpath},
+			</if>
+			<if test = "description != null">
+				description = #{description},
+			</if>
+			<if test = "forwordpath != null">
+				forwordpath = #{forwordpath},
+			</if>
+			</set>
+		where id = #{id}
+	</update>
+
+	<select id = "getById" parameterType = "String" resultType = "Rubooimg">
+		select <include refid = "selectId" />
+		from rubooimg
+		where
+		id = #{id}
+	</select>
+
+</mapper>

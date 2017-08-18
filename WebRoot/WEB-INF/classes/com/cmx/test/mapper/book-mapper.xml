@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmx.test.dao.BookDao">
+	<sql id = "selectId">
+		bookid,
+		bookname,
+		booknumber,
+		bookcount,
+		bookauthor,
+		bookprice,
+		bookpublish
+	</sql>
+
+	<select id = "query" resultType = "Book" parameterType = "java.util.HashMap">
+		select <include refid = "selectId" />
+		from book 
+		<where>
+			<if test = "bookid != null">
+				AND bookid = #{bookid}
+			</if>
+			<if test = "bookname != null">
+				AND bookname = #{bookname}
+			</if>
+			<if test = "booknumber != null">
+				AND booknumber = #{booknumber}
+			</if>
+			<if test = "bookcount != null">
+				AND bookcount = #{bookcount}
+			</if>
+			<if test = "bookauthor != null">
+				AND bookauthor = #{bookauthor}
+			</if>
+			<if test = "bookprice != null">
+				AND bookprice = #{bookprice}
+			</if>
+			<if test = "bookpublish != null">
+				AND bookpublish = #{bookpublish}
+			</if>
+		</where>
+	</select>
+
+	<insert id = "add" keyProperty = "id" parameterType = "Book" useGeneratedKeys = "true">
+		insert into book(
+			bookid,
+			bookname,
+			booknumber,
+			bookcount,
+			bookauthor,
+			bookprice,
+			bookpublish)
+		values(
+			#{bookid},
+			#{bookname},
+			#{booknumber},
+			#{bookcount},
+			#{bookauthor},
+			#{bookprice},
+			#{bookpublish})
+	</insert>
+
+	<delete id = "delete" parameterType = "String">
+		delete from book where id = #{id}
+	</delete>
+
+	<update id = "modify" parameterType = "Book">
+		update book
+		<set>
+			<if test = "bookid != null">
+				bookid = #{bookid},
+			</if>
+			<if test = "bookname != null">
+				bookname = #{bookname},
+			</if>
+			<if test = "booknumber != null">
+				booknumber = #{booknumber},
+			</if>
+			<if test = "bookcount != null">
+				bookcount = #{bookcount},
+			</if>
+			<if test = "bookauthor != null">
+				bookauthor = #{bookauthor},
+			</if>
+			<if test = "bookprice != null">
+				bookprice = #{bookprice},
+			</if>
+			<if test = "bookpublish != null">
+				bookpublish = #{bookpublish},
+			</if>
+		</set>
+		where id = #{id}
+		
+	</update>
+
+	<select id = "getById" parameterType = "String" resultType = "Book">
+		select <include refid = "selectId" />
+		from book
+		where
+		id = #{id}
+	</select>
+
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmx.test.dao.GoodsDao">
+	<sql id = "selectId">
+		goodsid,
+		goodsname,
+		description,
+		telephone,
+		goodspath,
+		owner,
+		category,
+		keyword
+	</sql>
+
+	<select id = "query" resultType = "Goods" parameterType = "java.util.HashMap">
+		select <include refid = "selectId" />
+		from goods 
+		<where>
+			<if test = "goodsid != null">
+				AND goodsid = #{goodsid}
+			</if>
+			<if test = "goodsname != null">
+				AND goodsname = #{goodsname}
+			</if>
+			<if test = "description != null">
+				AND description = #{description}
+			</if>
+			<if test = "telephone != null">
+				AND telephone = #{telephone}
+			</if>
+			<if test = "goodspath != null">
+				AND goodspath = #{goodspath}
+			</if>
+			<if test = "owner != null">
+				AND owner = #{owner}
+			</if>
+			<if test = "category != null">
+				AND category = #{category}
+			</if>
+			<if test = "keyword != null">
+				AND keyword = #{keyword}
+			</if>
+		</where>
+	</select>
+
+	<insert id = "add" keyProperty = "id" parameterType = "Goods" useGeneratedKeys = "true">
+		insert into goods(
+			goodsid,
+			goodsname,
+			description,
+			telephone,
+			goodspath,
+			owner,
+			category,
+			keyword)
+		values(
+			#{goodsid},
+			#{goodsname},
+			#{description},
+			#{telephone},
+			#{goodspath},
+			#{owner},
+			#{category},
+			#{keyword})
+	</insert>
+
+	<delete id = "delete" parameterType = "String">
+		delete from goods where id = #{id}
+	</delete>
+
+	<update id = "modify" parameterType = "Goods">
+		update goods
+		<set>
+			<if test = "goodsid != null">
+				goodsid = #{goodsid},
+			</if>
+			<if test = "goodsname != null">
+				goodsname = #{goodsname},
+			</if>
+			<if test = "description != null">
+				description = #{description},
+			</if>
+			<if test = "telephone != null">
+				telephone = #{telephone},
+			</if>
+			<if test = "goodspath != null">
+				goodspath = #{goodspath},
+			</if>
+			<if test = "owner != null">
+				owner = #{owner},
+			</if>
+			<if test = "category != null">
+				category = #{category},
+			</if>
+			<if test = "keyword != null">
+				keyword = #{keyword},
+			</if>
+			</set>
+		where id = #{id}
+	</update>
+
+	<select id = "getById" parameterType = "String" resultType = "Goods">
+		select <include refid = "selectId" />
+		from goods
+		where
+		id = #{id}
+	</select>
+
+</mapper>
