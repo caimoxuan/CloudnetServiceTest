@@ -5,4 +5,7 @@
   <typeAliases>
 		<package name="com.cmx.test.entity" />
   </typeAliases>
+  <plugins>  
+    <plugin interceptor="com.cmx.test.plugin.MybatisPlugin"/>
+  </plugins> 
 </configuration>

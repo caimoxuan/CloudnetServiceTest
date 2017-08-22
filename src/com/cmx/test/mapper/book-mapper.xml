@@ -39,7 +39,7 @@
 		</where>
 	</select>
 
-	<insert id = "add" keyProperty = "id" parameterType = "Book" useGeneratedKeys = "true">
+	<insert id = "add" keyProperty = "bookid" parameterType = "Book" useGeneratedKeys = "true">
 		insert into book(
 			bookid,
 			bookname,

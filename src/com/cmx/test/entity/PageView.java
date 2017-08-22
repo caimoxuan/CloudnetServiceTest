@@ -5,6 +5,8 @@ import java.util.List;
 
 public class PageView<T> implements Serializable{
 	
+	private static final long serialVersionUID = 7672516589636097960L;
+
 	private Integer pageSize = 10;
 	
 	private Integer pageCount;//总页数
@@ -77,8 +79,8 @@ public class PageView<T> implements Serializable{
 	}
 
 
-	public void setRecord(List<T> record) {
-		this.record = record;
+	public void setRecord(List<T> rowRecord) {
+		this.record = rowRecord;
 	}
 
 

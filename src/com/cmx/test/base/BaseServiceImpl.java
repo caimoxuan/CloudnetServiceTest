@@ -1,8 +1,12 @@
 package com.cmx.test.base;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.cmx.test.entity.PageView;
 
 public class BaseServiceImpl<T> implements BaseService<T>{
 	
@@ -30,5 +34,19 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 		List<T> rowRecord = dao.query(t);
 		return rowRecord;
 	}
+
+	@Override
+	public PageView<T> queryPage(PageView<T> pageView, T t) throws Exception {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("paging", pageView);
+		param.put("t", t);
+		List<T> rowRecord = dao.query(param);
+		pageView.setRecord(rowRecord);
+		return pageView;
+	}
+	
+	
+	
+	
 
 }
