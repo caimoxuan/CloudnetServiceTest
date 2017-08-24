@@ -21,6 +21,10 @@ public class PageView<T> implements Serializable{
 	
 	private Integer pageCode;//页码的数量
 	
+	private boolean needCountSql;//是否需要拦截时带上计数sql
+	
+	private String[] sortKey;//需要排序的key
+	
 	
 	
 	

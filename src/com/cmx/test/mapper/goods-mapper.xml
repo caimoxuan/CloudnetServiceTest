@@ -65,7 +65,7 @@
 	</insert>
 
 	<delete id = "delete" parameterType = "String">
-		delete from goods where id = #{id}
+		delete from goods where goodsid = #{goodsid}
 	</delete>
 
 	<update id = "modify" parameterType = "Goods">
@@ -96,14 +96,14 @@
 				keyword = #{keyword},
 			</if>
 			</set>
-		where id = #{id}
+		where goodsid = #{goodsid}
 	</update>
 
 	<select id = "getById" parameterType = "String" resultType = "Goods">
 		select <include refid = "selectId" />
 		from goods
 		where
-		id = #{id}
+		goodsid = #{goodsid}
 	</select>
 
 </mapper>

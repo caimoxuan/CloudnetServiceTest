@@ -10,12 +10,10 @@ public interface BaseService<T> {
 
 	public void delete(String id) throws Exception;
 
-	public void mofiy(T t) throws Exception;
+	public void modify(T t) throws Exception;
 
 	public Integer add(T t) throws Exception;
 	
-	//需要分页
-	public PageView<T> queryPage(PageView<T> pageView, T t) throws Exception;
-	
+	public PageView<T> queryPage(PageView<T> pageView, T t);
 
 }
