@@ -19,15 +19,31 @@ public class PageView<T> implements Serializable{
 	
 	private PageIndex pageIndex;//开始和结束页的索引
 	
-	private Integer pageCode;//页码的数量
+	private Integer pageCode = 5;//页码的数量
 	
-	private boolean needCountSql;//是否需要拦截时带上计数sql
+	private boolean needCountSql = true;//是否需要拦截时带上计数sql
 	
 	private String[] sortKey;//需要排序的key
 	
 	
 	
 	
+	public boolean isNeedCountSql() {
+		return needCountSql;
+	}
+
+	public void setNeedCountSql(boolean needCountSql) {
+		this.needCountSql = needCountSql;
+	}
+
+	public String[] getSortKey() {
+		return sortKey;
+	}
+
+	public void setSortKey(String[] sortKey) {
+		this.sortKey = sortKey;
+	}
+
 	public Integer getPageCode() {
 		return pageCode;
 	}

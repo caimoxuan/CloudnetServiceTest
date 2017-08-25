@@ -1,14 +1,18 @@
 package com.cmx.test.plugin;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
@@ -19,7 +23,7 @@ import org.apache.ibatis.reflection.SystemMetaObject;
 
 import com.cmx.test.entity.PageView;
 
-//			拦截			指定的类							指定的方法			指定的参数
+//拦截					指定的类							指定的方法			指定的参数
 @Intercepts({ @Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class}) })
 public class MybatisPlugin implements Interceptor{
 
@@ -29,6 +33,7 @@ public class MybatisPlugin implements Interceptor{
 		System.out.println("进入拦截器");
 		StatementHandler statementHandler = (StatementHandler)invocation.getTarget();
 		MetaObject metaStatementHandler = SystemMetaObject.forObject(statementHandler);
+		
 		
 		//循环剥离，可能会被代理多次，剥离出原始的对象
 		while(metaStatementHandler.hasGetter("h")){
@@ -57,12 +62,31 @@ public class MybatisPlugin implements Interceptor{
 			}
 		}
 		
+		String sql = boundSql.getSql();
 		if(pageView != null){
-			String sql = boundSql.getSql();
 			String pageSql = sql + " limit "+pageView.getFirstResult()+","+pageView.getPageSize();
-			//System.out.println(pageSql);
 			metaStatementHandler.setValue("delegate.boundSql.sql", pageSql);
 		}
+		
+		if(pageView != null){
+			if(pageView.isNeedCountSql()){
+				System.out.println("开始计数");
+				String countSql = "select count(1) from (" + sql +") tmp_count";
+				Connection connection = (Connection) invocation.getArgs()[0];  
+	            PreparedStatement countStatement = connection.prepareStatement(countSql);  
+	            ParameterHandler parameterHandler = (ParameterHandler) metaStatementHandler.getValue("delegate.parameterHandler");  
+	            parameterHandler.setParameters(countStatement);  
+	            ResultSet rs = countStatement.executeQuery();
+	            int count = -1;
+				if(rs.next()){
+					count = rs.getInt(1);
+				}
+				pageView.setTotalRecord(count);
+				rs.close();
+				countStatement.close();
+			}
+		}
+		
 		
 		return invocation.proceed();
 	}
@@ -78,5 +102,8 @@ public class MybatisPlugin implements Interceptor{
 	public void setProperties(Properties properties) {
 		
 	}
+	
+	
+	
 
 }

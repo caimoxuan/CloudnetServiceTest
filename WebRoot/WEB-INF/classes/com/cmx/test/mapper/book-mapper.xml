@@ -39,7 +39,7 @@
 		</where>
 	</select>
 
-	<insert id = "add" keyProperty = "id" parameterType = "Book" useGeneratedKeys = "true">
+	<insert id = "add" keyProperty = "bookid" parameterType = "Book" useGeneratedKeys = "true">
 		insert into book(
 			bookid,
 			bookname,
@@ -98,4 +98,12 @@
 		id = #{id}
 	</select>
 
+	<parameterMap type = "java.util.HashMap" id = "getSexNumMap">
+		<parameter property = "sexId" mode = "IN" jdbcType = "INTEGER" />
+		<parameter property = "sexNum" mode = "OUT" jdbcType = "INTEGER" />
+	</parameterMap>
+
+	<select id = "getSexNum" parameterMap = "getSexNumMap"  statementType = "CALLABLE">
+		 CALL getsex_num(?,?)
+	</select>
 </mapper>

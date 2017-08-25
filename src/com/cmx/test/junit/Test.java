@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import com.alibaba.fastjson.JSON;
 import com.cmx.test.entity.Book;
 import com.cmx.test.entity.Goods;
 import com.cmx.test.entity.PageView;
@@ -51,13 +52,18 @@ public class Test extends TestCase{
 	}
 	
 	public void testQueryPage(){
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		BookService bs = (BookService)applicationContext.getBean("bookService");
 		try {
 			PageView<Book> pageView = new PageView<Book>();
 			pageView = bs.queryPage(pageView, new Book());
-			for(Book b : pageView.getRecord()){
-				System.out.println("Book[bookid="+b.getBookid()+", bookname="+b.getBookname()+", bookauthor="+b.getBookauthor()+"]");
-			}
+			resultMap.put("row", pageView.getRecord());
+			resultMap.put("totalpage", pageView.getPageCount());
+			resultMap.put("totalRecord", pageView.getTotalRecord());
+			resultMap.put("pageNow", pageView.getCurrentPage());
+			Object json = JSON.toJSON(resultMap);
+			System.out.println(json.toString());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -89,5 +95,5 @@ public class Test extends TestCase{
 			e.printStackTrace();
 		}
 	}
-
+	
 }
